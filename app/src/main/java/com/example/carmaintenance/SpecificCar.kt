@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -118,6 +120,23 @@ fun SpecificCar(navController: NavHostController, carID: Int) {
                 ) {
                     serviceRecords?.forEach { it ->
                         ServiceRecordRow(it, navController)
+                    }
+                }
+            }
+
+            item {
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Button(
+                        modifier = Modifier.fillMaxWidth(0.75f),
+                        shape = RoundedCornerShape(10.dp),
+                        onClick = {
+                            navController.navigate(route = "add_service_record/$carID")
+                        }
+                    ) {
+                        Text("Add Service Record")
                     }
                 }
             }

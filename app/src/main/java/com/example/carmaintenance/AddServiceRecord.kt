@@ -8,10 +8,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,9 +25,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -37,28 +37,29 @@ import kotlinx.coroutines.runBlocking
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddCar(navController: NavHostController) {
+fun AddServiceRecord(navController: NavHostController, carID: Int) {
     val context: Context = LocalContext.current
-    var name = ""; var year = ""; var make = ""; var model = ""; var mileage = ""
+
+    var name = ""; var notes = ""; var mileage = ""; var date = "";
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        "Add New Car",
+                        "Add Service Record",
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { navController.navigate("cars_home") }) {
+                    IconButton(onClick = { navController.navigate(route = "specific_car/$carID") }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Back to home"
+                            contentDescription = "Back to car"
                         )
                     }
-                },
+                }
             )
         }
     ) { innerPadding ->
@@ -73,7 +74,6 @@ fun AddCar(navController: NavHostController) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var nameInput by remember { mutableStateOf(name) }
-                    val focusManager = LocalFocusManager.current
                     OutlinedTextField(
                         modifier = Modifier.fillMaxSize(),
                         value = nameInput,
@@ -81,13 +81,7 @@ fun AddCar(navController: NavHostController) {
                             nameInput = it
                             name = nameInput
                         },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Name") },
-                        singleLine = true
+                        label = { Text("Name") }
                     )
                 }
             }
@@ -98,25 +92,15 @@ fun AddCar(navController: NavHostController) {
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp),
                 ) {
-                    var yearInput by remember { mutableStateOf(year) }
-                    val focusManager = LocalFocusManager.current
+                    var notesInput by remember { mutableStateOf(notes) }
                     OutlinedTextField(
                         modifier = Modifier.fillMaxSize(),
-                        value = yearInput,
+                        value = notesInput,
                         onValueChange = {
-                            if (it.length <= 4) {
-                                yearInput = it
-                                year = yearInput
-                            }
+                            notesInput = it
+                            notes = notesInput
                         },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Year") },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        singleLine = true
+                        label = { Text("Notes") }
                     )
                 }
             }
@@ -127,60 +111,7 @@ fun AddCar(navController: NavHostController) {
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp),
                 ) {
-                    var makeInput by remember { mutableStateOf(make) }
-                    val focusManager = LocalFocusManager.current
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = makeInput,
-                        onValueChange = {
-                            makeInput = it
-                            make = makeInput
-                        },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Make") },
-                        singleLine = true
-                    )
-                }
-            }
-
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp),
-                ) {
-                    var modelInput by remember { mutableStateOf(model) }
-                    val focusManager = LocalFocusManager.current
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = modelInput,
-                        onValueChange = {
-                            modelInput = it
-                            model = modelInput
-                        },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Model") },
-                        singleLine = true
-                    )
-                }
-            }
-
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp),
-                ) {
-                    var mileageInput by remember { mutableStateOf("") }
-                    val focusManager = LocalFocusManager.current
+                    var mileageInput by remember { mutableStateOf(mileage) }
                     OutlinedTextField(
                         modifier = Modifier.fillMaxSize(),
                         value = mileageInput,
@@ -188,14 +119,7 @@ fun AddCar(navController: NavHostController) {
                             mileageInput = it
                             mileage = mileageInput
                         },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Current Mileage") },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        singleLine = true
+                        label = { Text("Mileage") }
                     )
                 }
             }
@@ -204,23 +128,47 @@ fun AddCar(navController: NavHostController) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(horizontal = 10.dp),
+                ) {
+                    var dateInput by remember { mutableStateOf(date) }
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxSize(),
+                        value = dateInput,
+                        onValueChange = {
+                            dateInput = it
+                            date = dateInput
+                        },
+                        label = { Text("Date") }
+                    )
+                }
+            }
+
+            item {
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .padding(top = 10.dp),
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Button(
-                        modifier = Modifier
-                            .fillMaxWidth(0.75f),
+                        modifier = Modifier.fillMaxWidth(0.75f),
                         shape = RoundedCornerShape(10.dp),
                         onClick = {
                             runBlocking {
                                 launch {
-                                    addCar(context, name, year, make, model, mileage)
+                                    if (name != "" && date != "") {
+                                        addServiceRecord(context, carID, name, notes, mileage, date)
+                                    } else {
+                                        
+                                    }
+
                                 }
                             }
-                            navController.navigate(route = "cars_home")
+
+                            navController.navigate(route = "specific_car/$carID")
                         }
                     ) {
-                        Text("Save")
+                        Text("Add Service Record")
                     }
                 }
             }
@@ -228,8 +176,8 @@ fun AddCar(navController: NavHostController) {
     }
 }
 
-suspend fun addCar(context: Context, name: String, year: String, make: String, model: String, mileage: String) {
+suspend fun addServiceRecord(context: Context, carID: Int, name: String, notes: String, mileage: String, date: String) {
     val db = CarDatabase.getDatabase(context)
-    val carsDao = db.carsDao()
-    carsDao.insertCar(Car(carID = 0, name = name, year = year, make = make, model = model, mileage = mileage))
+    val serviceRecordsDao = db.serviceRecordsDao()
+    serviceRecordsDao.insertServiceRecord(ServiceRecord(serviceRecordID = 0, carID = carID, name = name, notes = notes, mileage = mileage, date = date))
 }

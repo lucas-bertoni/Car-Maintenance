@@ -91,10 +91,19 @@ fun CarListDisplay(navController: NavHostController, innerPadding: PaddingValues
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(vertical = 20.dp)
+            .padding(vertical = 20.dp),
+        verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        cars?.forEach { it ->
-            CarRow(it, navController)
+        if (cars?.size == 0) {
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("No cars")
+            }
+        } else {
+            cars?.forEach { it ->
+                CarRow(it, navController)
+            }
         }
     }
 }

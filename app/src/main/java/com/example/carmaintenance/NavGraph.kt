@@ -33,6 +33,13 @@ fun NavGraph(navController: NavHostController) {
             }
         }
 
+        composable("add_service_record/{carID}") {
+            val carID = it.arguments?.getString("carID")
+            if (carID != null) {
+                AddServiceRecord(navController, carID = carID.toInt())
+            }
+        }
+
         composable("specific_service_record/{serviceRecordID}") {
             val serviceRecordID = it.arguments?.getString("serviceRecordID")
             if (serviceRecordID != null) {
