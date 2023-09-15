@@ -90,9 +90,15 @@ interface ServiceRecordsDao {
     @Query("SELECT * FROM service_records WHERE carID = :carID")
     suspend fun getServiceRecords(carID: Int): List<ServiceRecord>
 
+    @Query("SELECT * FROM service_records WHERE serviceRecordID = :serviceRecordID")
+    suspend fun getServiceRecord(serviceRecordID: Int): ServiceRecord
+
     @Insert
     suspend fun insertServiceRecord(serviceRecord: ServiceRecord)
 
     @Query("DELETE FROM service_records WHERE serviceRecordID = :serviceRecordID")
     suspend fun deleteServiceRecord(serviceRecordID: Int)
+
+    @Query("UPDATE service_records SET name = :name, notes = :notes, mileage = :mileage, date = :date WHERE serviceRecordID = :serviceRecordID")
+    suspend fun updateServiceRecord(serviceRecordID: Int, name: String, notes: String, mileage: String, date: String)
 }

@@ -9,21 +9,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -35,7 +31,7 @@ import kotlinx.coroutines.runBlocking
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SpecificCarScreen(navController: NavHostController, carID: Int) {
+fun SpecificCar(navController: NavHostController, carID: Int) {
     val context: Context = LocalContext.current
     val db = CarDatabase.getDatabase(context)
     val carsDao = db.carsDao()
@@ -72,7 +68,7 @@ fun SpecificCarScreen(navController: NavHostController, carID: Int) {
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { navController.navigate(route = "home/true") }) {
+                    IconButton(onClick = { navController.navigate(route = "cars_home") }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "Back to home"
@@ -134,8 +130,15 @@ fun ServiceRecordRow(serviceRecord: ServiceRecord, navController: NavHostControl
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 20.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text("${serviceRecord.name} ${serviceRecord.date}")
+        IconButton(onClick = { navController.navigate(route = "specific_service_record/${serviceRecord.serviceRecordID}") }) {
+            Icon(
+                imageVector = Icons.Filled.ArrowForward,
+                contentDescription = "View service record"
+            )
+        }
     }
 }

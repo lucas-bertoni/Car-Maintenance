@@ -2,7 +2,6 @@ package com.example.carmaintenance
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,7 +35,7 @@ import kotlinx.coroutines.runBlocking
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddCarScreen(navController: NavHostController) {
+fun AddCar(navController: NavHostController) {
     val context: Context = LocalContext.current
     var name = ""; var year = ""; var make = ""; var model = ""; var mileage = ""
 
@@ -51,7 +50,7 @@ fun AddCarScreen(navController: NavHostController) {
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { navController.navigate("home/true") }) {
+                    IconButton(onClick = { navController.navigate("cars_home") }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "Back to home"
@@ -181,7 +180,7 @@ fun AddCarScreen(navController: NavHostController) {
                                     addCar(context, name, year, make, model, mileage)
                                 }
                             }
-                            navController.navigate(route = "home/true")
+                            navController.navigate(route = "cars_home")
                         }
                     ) {
                         Text("Save")

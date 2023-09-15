@@ -9,33 +9,41 @@ import androidx.navigation.compose.composable
 fun NavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = "home/false"
+        startDestination = "cars_home"
     ) {
-        composable("home/{intentional}") {it ->
-            val intentional = it.arguments?.getString("intentional").toBoolean()
-            if (intentional != null) {
-                if (intentional) {
-                    HomeScreen(navController, true)
-                } else {
-                    HomeScreen(navController, false)
-                }
-            }
-
+        composable("cars_home") {it ->
+            CarsHome(navController)
         }
+
+        composable("add_car") {
+            AddCar(navController)
+        }
+
         composable("specific_car/{carID}") {it ->
             val carID = it.arguments?.getString("carID")
             if (carID != null) {
-                SpecificCarScreen(navController, carID = carID.toInt())
+                SpecificCar(navController, carID = carID.toInt())
             }
-        }
-        composable("add_car") {
-            AddCarScreen(navController)
         }
 
         composable("edit_car/{carID}") {
             val carID = it.arguments?.getString("carID")
             if (carID != null) {
-                EditCarScreen(navController, carID = carID.toInt())
+                EditCar(navController, carID = carID.toInt())
+            }
+        }
+
+        composable("specific_service_record/{serviceRecordID}") {
+            val serviceRecordID = it.arguments?.getString("serviceRecordID")
+            if (serviceRecordID != null) {
+                SpecificServiceRecord(navController, serviceRecordID = serviceRecordID.toInt())
+            }
+        }
+
+        composable("edit_service_record/{serviceRecordID}") {
+            val serviceRecordID = it.arguments?.getString("serviceRecordID")
+            if (serviceRecordID != null) {
+                EditServiceRecord(navController, serviceRecordID = serviceRecordID.toInt())
             }
         }
     }

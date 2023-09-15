@@ -1,3 +1,5 @@
+Add reminder screen independent of cars and when you add a new reminder you select the car you want
+
 Create categories for each service record to allow filtering 
 	oil change
 	transmission fluid change

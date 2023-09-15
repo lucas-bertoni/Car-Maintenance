@@ -30,7 +30,7 @@ import kotlinx.coroutines.runBlocking
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavHostController, intentional: Boolean) {
+fun CarsHome(navController: NavHostController) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
@@ -53,7 +53,7 @@ fun HomeScreen(navController: NavHostController, intentional: Boolean) {
             contentPadding = innerPadding
         ) {
             item {
-                CarListDisplay(navController, innerPadding, intentional)
+                CarListDisplay(navController, innerPadding)
             }
 
             item {
@@ -77,7 +77,7 @@ fun HomeScreen(navController: NavHostController, intentional: Boolean) {
 }
 
 @Composable
-fun CarListDisplay(navController: NavHostController, innerPadding: PaddingValues, intentional: Boolean) {
+fun CarListDisplay(navController: NavHostController, innerPadding: PaddingValues) {
     val db = CarDatabase.getDatabase(LocalContext.current)
     val carDao = db.carsDao()
     var cars: List<Car>? = null
@@ -93,13 +93,8 @@ fun CarListDisplay(navController: NavHostController, innerPadding: PaddingValues
             .fillMaxSize()
             .padding(vertical = 20.dp)
     ) {
-        if (cars?.size == 1 && !intentional) {
-            val carID = cars!![0].carID
-            navController.navigate("specific_car/$carID")
-        } else {
-            cars?.forEach { it ->
-                CarRow(it, navController)
-            }
+        cars?.forEach { it ->
+            CarRow(it, navController)
         }
     }
 }
