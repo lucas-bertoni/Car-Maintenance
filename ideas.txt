@@ -1,0 +1,23 @@
+Create categories for each service record to allow filtering 
+	oil change
+	transmission fluid change
+	brake fluid change
+	spark plugs
+	brakes
+		pads
+			front
+			rear
+			driver
+			passenger
+		rotors
+			front
+			rear
+			driver
+			passenger
+		calipers
+			front
+			rear
+			driver
+			passenger
+	tires
+	etc
