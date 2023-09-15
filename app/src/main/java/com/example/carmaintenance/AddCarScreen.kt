@@ -1,7 +1,8 @@
 package com.example.carmaintenance
 
-import androidx.compose.foundation.background
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,15 +26,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddCarScreen(navController: NavHostController) {
+    val context: Context = LocalContext.current
+    var name = ""; var year = ""; var make = ""; var model = ""; var mileage = ""
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -45,7 +51,7 @@ fun AddCarScreen(navController: NavHostController) {
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { navController.navigate("home") }) {
+                    IconButton(onClick = { navController.navigate("home/true") }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "Back to home"
@@ -65,11 +71,35 @@ fun AddCarScreen(navController: NavHostController) {
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp),
                 ) {
-                    var year by remember { mutableStateOf("") }
+                    var nameInput by remember { mutableStateOf(name) }
                     OutlinedTextField(
                         modifier = Modifier.fillMaxSize(),
-                        value = year,
-                        onValueChange = { year = it },
+                        value = nameInput,
+                        onValueChange = {
+                            nameInput = it
+                            name = nameInput
+                        },
+                        label = { Text("Name") }
+                    )
+                }
+            }
+
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp),
+                ) {
+                    var yearInput by remember { mutableStateOf(year) }
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxSize(),
+                        value = yearInput,
+                        onValueChange = {
+                            if (it.length <= 4) {
+                                yearInput = it
+                                year = yearInput
+                            }
+                        },
                         label = { Text("Year") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
@@ -82,11 +112,14 @@ fun AddCarScreen(navController: NavHostController) {
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp),
                 ) {
-                    var make by remember { mutableStateOf("") }
+                    var makeInput by remember { mutableStateOf(make) }
                     OutlinedTextField(
                         modifier = Modifier.fillMaxSize(),
-                        value = make,
-                        onValueChange = { make = it },
+                        value = makeInput,
+                        onValueChange = {
+                            makeInput = it
+                            make = makeInput
+                        },
                         label = { Text("Make") }
                     )
                 }
@@ -98,11 +131,14 @@ fun AddCarScreen(navController: NavHostController) {
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp),
                 ) {
-                    var model by remember { mutableStateOf("") }
+                    var modelInput by remember { mutableStateOf(model) }
                     OutlinedTextField(
                         modifier = Modifier.fillMaxSize(),
-                        value = model,
-                        onValueChange = { model = it },
+                        value = modelInput,
+                        onValueChange = {
+                            modelInput = it
+                            model = modelInput
+                        },
                         label = { Text("Model") }
                     )
                 }
@@ -114,18 +150,22 @@ fun AddCarScreen(navController: NavHostController) {
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp),
                 ) {
-                    var trim by remember { mutableStateOf("") }
+                    var mileageInput by remember { mutableStateOf("") }
                     OutlinedTextField(
                         modifier = Modifier.fillMaxSize(),
-                        value = trim,
-                        onValueChange = { trim = it },
-                        label = { Text("Trim") }
+                        value = mileageInput,
+                        onValueChange = {
+                            mileageInput = it
+                            mileage = mileageInput
+                        },
+                        label = { Text("Current Mileage") },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
                 }
             }
 
             item {
-                Row (
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp),
@@ -135,7 +175,14 @@ fun AddCarScreen(navController: NavHostController) {
                         modifier = Modifier
                             .fillMaxWidth(0.75f),
                         shape = RoundedCornerShape(10.dp),
-                        onClick = { /* Add new car */ }
+                        onClick = {
+                            runBlocking {
+                                launch {
+                                    addCar(context, name, year, make, model, mileage)
+                                }
+                            }
+                            navController.navigate(route = "home/true")
+                        }
                     ) {
                         Text("Save")
                     }
@@ -143,4 +190,10 @@ fun AddCarScreen(navController: NavHostController) {
             }
         }
     }
+}
+
+suspend fun addCar(context: Context, name: String, year: String, make: String, model: String, mileage: String) {
+    val db = CarDatabase.getDatabase(context)
+    val carsDao = db.carsDao()
+    carsDao.insertCar(Car(carID = 0, name = name, year = year, make = make, model = model, mileage = mileage))
 }

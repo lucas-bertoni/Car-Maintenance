@@ -9,16 +9,34 @@ import androidx.navigation.compose.composable
 fun NavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = "home"
+        startDestination = "home/false"
     ) {
-        composable(route = "home"){
-            HomeScreen(navController)
+        composable("home/{intentional}") {it ->
+            val intentional = it.arguments?.getString("intentional").toBoolean()
+            if (intentional != null) {
+                if (intentional) {
+                    HomeScreen(navController, true)
+                } else {
+                    HomeScreen(navController, false)
+                }
+            }
+
         }
-        composable(route = "specific_car"){
-            SpecificCarScreen(navController)
+        composable("specific_car/{carID}") {it ->
+            val carID = it.arguments?.getString("carID")
+            if (carID != null) {
+                SpecificCarScreen(navController, carID = carID.toInt())
+            }
         }
-        composable(route = "add_car") {
+        composable("add_car") {
             AddCarScreen(navController)
+        }
+
+        composable("edit_car/{carID}") {
+            val carID = it.arguments?.getString("carID")
+            if (carID != null) {
+                EditCarScreen(navController, carID = carID.toInt())
+            }
         }
     }
 }
