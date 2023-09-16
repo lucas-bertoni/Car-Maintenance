@@ -1,5 +1,9 @@
 Add reminder screen independent of cars and when you add a new reminder you select the car you want
 
+When creating a reminder, offer to create a new reminder based on an old reminder
+	if creating an oil change, see if there is a previous oil change and make a new reminder for
+	an oil change at the mileage + however many miles the user selects
+
 Create categories for each service record to allow filtering 
 	oil change
 	transmission fluid change

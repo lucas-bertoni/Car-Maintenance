@@ -53,5 +53,34 @@ fun NavGraph(navController: NavHostController) {
                 EditServiceRecord(navController, serviceRecordID = serviceRecordID.toInt())
             }
         }
+
+        composable("reminders_home") { it ->
+            RemindersHome(navController)
+        }
+
+        composable("add_reminder") { it ->
+            AddReminder(navController)
+        }
+
+        composable("specific_reminder/{reminderID}") {it ->
+            val reminderID = it.arguments?.getString("reminderID")
+            if (reminderID != null) {
+                SpecificReminder(navController, reminderID = reminderID.toInt())
+            }
+        }
+
+        composable("specific_reminder/{reminderID}") {it ->
+            val reminderID = it.arguments?.getString("reminderID")
+            if (reminderID != null) {
+                SpecificReminder(navController, reminderID = reminderID.toInt())
+            }
+        }
+
+        composable("edit_reminder/{reminderID}") {it ->
+            val reminderID = it.arguments?.getString("reminderID")
+            if (reminderID != null) {
+                EditReminder(navController, reminderID = reminderID.toInt())
+            }
+        }
     }
 }

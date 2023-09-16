@@ -38,25 +38,25 @@ import kotlinx.coroutines.runBlocking
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditCar(navController: NavHostController, carID: Int) {
+fun EditReminder(navController: NavHostController, reminderID: Int) {
     val context: Context = LocalContext.current
     val db = CarDatabase.getDatabase(context)
-    val carsDao = db.carsDao()
-    var car: Car? = null
+    val remindersDao = db.remindersDao()
+    var reminder: Reminder? = null
 
     runBlocking {
         launch {
-            car = carsDao.getCar(carID)
+            reminder = remindersDao.getReminder(reminderID)
         }
     }
 
-    var name = ""; var year = ""; var make = ""; var model = ""; var mileage = "";
-    if (car != null) {
-        name = car!!.name.toString()
-        year = car!!.year.toString()
-        make = car!!.make.toString()
-        model = car!!.model.toString()
-        mileage = car!!.mileage.toString()
+    var name = ""; var notes = ""; var date = ""; var time = ""; var mileage = "";
+    if (reminder != null) {
+        name = reminder!!.name
+        notes = if (reminder!!.notes == null) "" else reminder!!.notes.toString()
+        date = if (reminder!!.date == null) "" else reminder!!.date.toString()
+        time = if (reminder!!.time == null) "" else reminder!!.time.toString()
+        mileage = reminder!!.mileage.toString()
     }
 
     Scaffold(
@@ -64,16 +64,16 @@ fun EditCar(navController: NavHostController, carID: Int) {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        "Edit Car",
+                        "Edit Reminder",
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { navController.navigate(route = "specific_car/$carID") }) {
+                    IconButton(onClick = { navController.navigate(route = "specific_reminder/$reminderID") }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Back to car"
+                            contentDescription = "Back to reminder"
                         )
                     }
                 },
@@ -82,16 +82,16 @@ fun EditCar(navController: NavHostController, carID: Int) {
                         onClick = {
                             runBlocking {
                                 launch {
-                                    deleteCar(context, carID)
+                                    deleteReminder(context, reminderID)
                                 }
                             }
 
-                            navController.navigate("cars_home")
+                            navController.navigate("reminders_home")
                         }
                     ) {
                         Icon(
                             imageVector = Icons.Filled.Delete,
-                            contentDescription = "Delete Car"
+                            contentDescription = "Delete reminder"
                         )
                     }
                 }
@@ -134,76 +134,21 @@ fun EditCar(navController: NavHostController, carID: Int) {
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp),
                 ) {
-                    var yearInput by remember { mutableStateOf(year) }
+                    var notesInput by remember { mutableStateOf(notes) }
                     val focusManager = LocalFocusManager.current
                     OutlinedTextField(
                         modifier = Modifier.fillMaxSize(),
-                        value = yearInput,
+                        value = notesInput,
                         onValueChange = {
-                            if (it.length <= 4) {
-                                yearInput = it
-                                year = yearInput
-                            }
+                            notesInput = it
+                            notes = notesInput
                         },
                         keyboardActions = KeyboardActions(
                             onDone = {
                                 focusManager.clearFocus()
                             }
                         ),
-                        label = { Text("Year") },
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                    )
-                }
-            }
-
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp),
-                ) {
-                    var makeInput by remember { mutableStateOf(make) }
-                    val focusManager = LocalFocusManager.current
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = makeInput,
-                        onValueChange = {
-                            makeInput = it
-                            make = makeInput
-                        },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Make") },
-                        singleLine = true
-                    )
-                }
-            }
-
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp),
-                ) {
-                    var modelInput by remember { mutableStateOf(model) }
-                    val focusManager = LocalFocusManager.current
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = modelInput,
-                        onValueChange = {
-                            modelInput = it
-                            model = modelInput
-                        },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Model") },
+                        label = { Text("Notes") },
                         singleLine = true
                     )
                 }
@@ -237,6 +182,32 @@ fun EditCar(navController: NavHostController, carID: Int) {
             }
 
             item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp),
+                ) {
+                    var dateInput by remember { mutableStateOf(date) }
+                    val focusManager = LocalFocusManager.current
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxSize(),
+                        value = dateInput,
+                        onValueChange = {
+                            dateInput = it
+                            date = dateInput
+                        },
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                focusManager.clearFocus()
+                            }
+                        ),
+                        label = { Text("Date") },
+                        singleLine = true
+                    )
+                }
+            }
+
+            item {
                 Row (
                     modifier = Modifier
                         .fillMaxWidth()
@@ -249,14 +220,14 @@ fun EditCar(navController: NavHostController, carID: Int) {
                         onClick = {
                             runBlocking {
                                 launch {
-                                    updateCar(context, carID, name, year, make, model, mileage)
+                                    updateReminder(context, reminderID, name, notes, date, time, mileage)
                                 }
                             }
 
-                            navController.navigate(route = "specific_car/$carID")
+                            navController.navigate(route = "reminders_home")
                         }
                     ) {
-                        Text("Update Car")
+                        Text("Update Reminder")
                     }
                 }
             }
@@ -264,14 +235,14 @@ fun EditCar(navController: NavHostController, carID: Int) {
     }
 }
 
-suspend fun updateCar(context: Context, carID: Int, name: String, year: String, make: String, model: String, mileage: String) {
+suspend fun updateReminder(context: Context, reminderID: Int, name: String, notes: String, date: String, time: String, mileage: String) {
     val db = CarDatabase.getDatabase(context)
-    val carsDao = db.carsDao()
-    carsDao.updateCar(carID, name, year, make, model, mileage)
+    val remindersDao = db.remindersDao()
+    remindersDao.updateReminder(reminderID, name, notes, mileage, time, date)
 }
 
-suspend fun deleteCar(context: Context, carID: Int) {
+suspend fun deleteReminder(context: Context, reminderID: Int) {
     val db = CarDatabase.getDatabase(context)
-    val carsDao = db.carsDao()
-    carsDao.deleteCar(carID)
+    val remindersDao = db.remindersDao()
+    remindersDao.deleteReminder(reminderID)
 }

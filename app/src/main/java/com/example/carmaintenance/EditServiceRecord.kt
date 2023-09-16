@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -27,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -48,7 +50,7 @@ fun EditServiceRecord(navController: NavHostController, serviceRecordID: Int) {
         }
     }
 
-    var carID = ""; var name = ""; var notes = ""; var mileage = ""; var date = "";
+    var carID = ""; var name = ""; var notes = ""; var mileage = ""; var date = ""
     if (serviceRecord != null) {
         carID = serviceRecord!!.carID.toString()
         name = serviceRecord!!.name
@@ -107,6 +109,7 @@ fun EditServiceRecord(navController: NavHostController, serviceRecordID: Int) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var nameInput by remember { mutableStateOf(name) }
+                    val focusManager = LocalFocusManager.current
                     OutlinedTextField(
                         modifier = Modifier.fillMaxSize(),
                         value = nameInput,
@@ -114,7 +117,13 @@ fun EditServiceRecord(navController: NavHostController, serviceRecordID: Int) {
                             nameInput = it
                             name = nameInput
                         },
-                        label = { Text("Name") }
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                focusManager.clearFocus()
+                            }
+                        ),
+                        label = { Text("Name") },
+                        singleLine = true
                     )
                 }
             }
@@ -126,6 +135,7 @@ fun EditServiceRecord(navController: NavHostController, serviceRecordID: Int) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var notesInput by remember { mutableStateOf(notes) }
+                    val focusManager = LocalFocusManager.current
                     OutlinedTextField(
                         modifier = Modifier.fillMaxSize(),
                         value = notesInput,
@@ -133,7 +143,13 @@ fun EditServiceRecord(navController: NavHostController, serviceRecordID: Int) {
                             notesInput = it
                             notes = notesInput
                         },
-                        label = { Text("Notes") }
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                focusManager.clearFocus()
+                            }
+                        ),
+                        label = { Text("Notes") },
+                        singleLine = true
                     )
                 }
             }
@@ -145,6 +161,7 @@ fun EditServiceRecord(navController: NavHostController, serviceRecordID: Int) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var mileageInput by remember { mutableStateOf(mileage) }
+                    val focusManager = LocalFocusManager.current
                     OutlinedTextField(
                         modifier = Modifier.fillMaxSize(),
                         value = mileageInput,
@@ -152,7 +169,14 @@ fun EditServiceRecord(navController: NavHostController, serviceRecordID: Int) {
                             mileageInput = it
                             mileage = mileageInput
                         },
-                        label = { Text("Mileage") }
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                focusManager.clearFocus()
+                            }
+                        ),
+                        label = { Text("Mileage") },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
                 }
             }
@@ -164,6 +188,7 @@ fun EditServiceRecord(navController: NavHostController, serviceRecordID: Int) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var dateInput by remember { mutableStateOf(date) }
+                    val focusManager = LocalFocusManager.current
                     OutlinedTextField(
                         modifier = Modifier.fillMaxSize(),
                         value = dateInput,
@@ -171,7 +196,13 @@ fun EditServiceRecord(navController: NavHostController, serviceRecordID: Int) {
                             dateInput = it
                             date = dateInput
                         },
-                        label = { Text("Date") }
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                focusManager.clearFocus()
+                            }
+                        ),
+                        label = { Text("Date") },
+                        singleLine = true
                     )
                 }
             }

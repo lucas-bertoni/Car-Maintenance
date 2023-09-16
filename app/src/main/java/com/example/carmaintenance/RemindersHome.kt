@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,7 +35,7 @@ import kotlinx.coroutines.runBlocking
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CarsHome(navController: NavHostController) {
+fun RemindersHome(navController: NavHostController) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
@@ -42,16 +43,16 @@ fun CarsHome(navController: NavHostController) {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        "My Cars",
+                        "My Reminders",
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { navController.navigate("reminders_home") }) {
+                    IconButton(onClick = { navController.navigate("cars_home") }) {
                         Icon(
                             imageVector = Icons.Filled.Home,
-                            contentDescription = "Reminders home"
+                            contentDescription = "Cars home"
                         )
                     }
                 }
@@ -63,7 +64,7 @@ fun CarsHome(navController: NavHostController) {
             contentPadding = innerPadding
         ) {
             item {
-                CarListDisplay(navController, innerPadding)
+                ReminderListDisplay(navController, innerPadding)
             }
 
             item {
@@ -75,10 +76,10 @@ fun CarsHome(navController: NavHostController) {
                         modifier = Modifier.fillMaxWidth(0.75f),
                         shape = RoundedCornerShape(10.dp),
                         onClick = {
-                            navController.navigate(route = "add_car")
+                            navController.navigate(route = "add_reminder")
                         }
                     ) {
-                        Text("Add New Car")
+                        Text("Add New Reminder")
                     }
                 }
             }
@@ -87,14 +88,14 @@ fun CarsHome(navController: NavHostController) {
 }
 
 @Composable
-fun CarListDisplay(navController: NavHostController, innerPadding: PaddingValues) {
+fun ReminderListDisplay(navController: NavHostController, innerPadding: PaddingValues) {
     val db = CarDatabase.getDatabase(LocalContext.current)
-    val carDao = db.carsDao()
-    var cars: List<Car>? = null
+    val remindersDao = db.remindersDao()
+    var reminders: List<Reminder>? = null
 
     runBlocking {
         launch {
-            cars = carDao.getAllCars()
+            reminders = remindersDao.getReminders()
         }
     }
 
@@ -104,22 +105,22 @@ fun CarListDisplay(navController: NavHostController, innerPadding: PaddingValues
             .padding(vertical = 20.dp),
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        if (cars?.size == 0) {
+        if (reminders?.size == 0) {
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("No cars")
+                Text("No reminders")
             }
         } else {
-            cars?.forEach { it ->
-                CarRow(it, navController)
+            reminders?.forEach { it ->
+                ReminderRow(it, navController)
             }
         }
     }
 }
 
 @Composable
-fun CarRow(car: Car, navController: NavHostController) {
+fun ReminderRow(reminder: Reminder, navController: NavHostController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -128,19 +129,18 @@ fun CarRow(car: Car, navController: NavHostController) {
             .padding(horizontal = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val carID = car.carID
-        val name = car.name
-        val year = car.year
-        val make = car.make
-        val model = car.model
+        val reminderID = reminder.reminderID
+        val name = reminder.name
+        val date = reminder.date
+        val mileage = reminder.mileage
         Button(
             modifier = Modifier.fillMaxSize(),
             shape = RoundedCornerShape(5.dp),
             onClick = {
-                navController.navigate("specific_car/$carID")
+                navController.navigate("specific_reminder/$reminderID")
             }
         ) {
-            if (name != "") name?.let { Text(it) } else Text("$year $make $model")
+            Text(name)
         }
     }
 }
