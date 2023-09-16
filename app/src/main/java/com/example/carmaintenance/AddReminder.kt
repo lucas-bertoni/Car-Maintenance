@@ -144,23 +144,8 @@ fun AddReminder(navController: NavHostController) {
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp),
                 ) {
-                    var nameInput by remember { mutableStateOf(name) }
-                    val focusManager = LocalFocusManager.current
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = nameInput,
-                        onValueChange = {
-                            nameInput = it
-                            name = nameInput
-                        },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Name") },
-                        singleLine = true
-                    )
+                    var nameInput by remember { mutableStateOf("") }
+                    CustomTextField(label = "Name", value = nameInput, onInputChange = { nameInput = it }, type = "String", singleLine = true)
                 }
             }
 
@@ -170,22 +155,8 @@ fun AddReminder(navController: NavHostController) {
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp),
                 ) {
-                    var notesInput by remember { mutableStateOf(notes) }
-                    val focusManager = LocalFocusManager.current
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = notesInput,
-                        onValueChange = {
-                            notesInput = it
-                            notes = notesInput
-                        },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Notes") }
-                    )
+                    var notesInput by remember { mutableStateOf("") }
+                    CustomTextField(label = "Notes", value = notesInput, onInputChange = { notesInput = it }, type = "String", singleLine = false)
                 }
             }
 
@@ -195,23 +166,8 @@ fun AddReminder(navController: NavHostController) {
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp),
                 ) {
-                    var dateInput by remember { mutableStateOf(date) }
-                    val focusManager = LocalFocusManager.current
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = dateInput,
-                        onValueChange = {
-                            dateInput = it
-                            date = dateInput
-                        },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Date") },
-                        singleLine = true
-                    )
+                    var dateInput by remember { mutableStateOf("") }
+                    CustomTextField(label = "Date", value = dateInput, onInputChange = { dateInput = it }, type = "String", singleLine = true)
                 }
             }
 
@@ -221,23 +177,8 @@ fun AddReminder(navController: NavHostController) {
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp),
                 ) {
-                    var timeInput by remember { mutableStateOf(time) }
-                    val focusManager = LocalFocusManager.current
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = timeInput,
-                        onValueChange = {
-                            timeInput = it
-                            time = timeInput
-                        },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Time") },
-                        singleLine = true
-                    )
+                    var timeInput by remember { mutableStateOf("") }
+                    CustomTextField(label = "Time", value = timeInput, onInputChange = { timeInput = it }, type = "String", singleLine = true)
                 }
             }
 
@@ -248,23 +189,7 @@ fun AddReminder(navController: NavHostController) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var mileageInput by remember { mutableStateOf("") }
-                    val focusManager = LocalFocusManager.current
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = mileageInput,
-                        onValueChange = {
-                            mileageInput = it
-                            mileage = mileageInput
-                        },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Mileage") },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        singleLine = true
-                    )
+                    CustomTextField(label = "Mileage", value = mileageInput, onInputChange = { mileageInput = it }, type = "Int", singleLine = true)
                 }
             }
 
@@ -282,7 +207,6 @@ fun AddReminder(navController: NavHostController) {
                         onClick = {
                             runBlocking {
                                 launch {
-                                    println(carID)
                                     addReminder(context, carID, name, notes, date, time, mileage)
                                 }
                             }
