@@ -11,7 +11,7 @@ fun NavGraph(navController: NavHostController) {
         navController = navController,
         startDestination = "cars_home"
     ) {
-        composable("cars_home") {it ->
+        composable("cars_home") {
             CarsHome(navController)
         }
 
@@ -19,7 +19,7 @@ fun NavGraph(navController: NavHostController) {
             AddCar(navController)
         }
 
-        composable("specific_car/{carID}") {it ->
+        composable("specific_car/{carID}") {
             val carID = it.arguments?.getString("carID")
             if (carID != null) {
                 SpecificCar(navController, carID = carID.toInt())
@@ -54,29 +54,29 @@ fun NavGraph(navController: NavHostController) {
             }
         }
 
-        composable("reminders_home") { it ->
+        composable("reminders_home") {
             RemindersHome(navController)
         }
 
-        composable("add_reminder") { it ->
+        composable("add_reminder") {
             AddReminder(navController)
         }
 
-        composable("specific_reminder/{reminderID}") {it ->
+        composable("specific_reminder/{reminderID}") {
             val reminderID = it.arguments?.getString("reminderID")
             if (reminderID != null) {
                 SpecificReminder(navController, reminderID = reminderID.toInt())
             }
         }
 
-        composable("specific_reminder/{reminderID}") {it ->
+        composable("specific_reminder/{reminderID}") {
             val reminderID = it.arguments?.getString("reminderID")
             if (reminderID != null) {
                 SpecificReminder(navController, reminderID = reminderID.toInt())
             }
         }
 
-        composable("edit_reminder/{reminderID}") {it ->
+        composable("edit_reminder/{reminderID}") {
             val reminderID = it.arguments?.getString("reminderID")
             if (reminderID != null) {
                 EditReminder(navController, reminderID = reminderID.toInt())

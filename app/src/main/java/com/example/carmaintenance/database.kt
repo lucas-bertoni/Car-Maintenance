@@ -1,7 +1,6 @@
 package com.example.carmaintenance
 
 import android.content.Context
-import android.provider.CalendarContract.Reminders
 import androidx.room.Room
 import androidx.room.ColumnInfo
 import androidx.room.Dao

@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
@@ -18,7 +16,6 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,8 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -50,7 +45,7 @@ fun EditReminder(navController: NavHostController, reminderID: Int) {
         }
     }
 
-    var name = ""; var notes = ""; var date = ""; var time = ""; var mileage = "";
+    var name = ""; var notes = ""; var date = ""; var time = ""; var mileage = ""
     if (reminder != null) {
         name = reminder!!.name
         notes = if (reminder!!.notes == null) "" else reminder!!.notes.toString()
@@ -143,6 +138,17 @@ fun EditReminder(navController: NavHostController, reminderID: Int) {
                 ) {
                     var dateInput by remember { mutableStateOf(date) }
                     CustomTextField(label = "Date", value = dateInput, onInputChange = { dateInput = it; date = dateInput }, type = "String", singleLine = true)
+                }
+            }
+
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp),
+                ) {
+                    var timeInput by remember { mutableStateOf(time) }
+                    CustomTextField(label = "Time", value = timeInput, onInputChange = { timeInput = it; time = timeInput }, type = "String", singleLine = true)
                 }
             }
 

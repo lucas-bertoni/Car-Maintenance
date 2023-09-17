@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
@@ -18,7 +16,6 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,8 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -50,7 +45,7 @@ fun EditCar(navController: NavHostController, carID: Int) {
         }
     }
 
-    var name = ""; var year = ""; var make = ""; var model = ""; var mileage = "";
+    var name = ""; var year = ""; var make = ""; var model = ""; var mileage = ""
     if (car != null) {
         name = car!!.name.toString()
         year = car!!.year.toString()
@@ -142,7 +137,7 @@ fun EditCar(navController: NavHostController, carID: Int) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var modelInput by remember { mutableStateOf(model) }
-                    CustomTextField(label = "Model", value = modelInput, onInputChange = { modelInput = it; make = modelInput }, type = "String", singleLine = true)
+                    CustomTextField(label = "Model", value = modelInput, onInputChange = { modelInput = it; model = modelInput }, type = "String", singleLine = true)
                 }
             }
 

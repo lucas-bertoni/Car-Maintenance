@@ -48,23 +48,19 @@ fun SpecificCar(navController: NavHostController, carID: Int) {
         }
     }
 
-    var title = ""
-    var name = ""; var year = ""; var make = ""; var model = ""; var mileage = ""
-    if (car != null) {
-        title = if(car!!.name != "") car!!.name.toString() else "${car!!.year} ${car!!.make} ${car!!.model}"
-        name = car!!.name.toString()
-        year = car!!.year.toString()
-        make = car!!.make.toString()
-        model = car!!.model.toString()
-        mileage = car!!.mileage.toString()
-    }
+    val name = car?.name    // This can't be null
+    val year = if (car?.year == null) "" else car?.year
+    val make = if (car?.make == null) "" else car?.make
+    val model = if (car?.model == null) "" else car?.model
+    val mileage = if (car?.mileage == null) "" else car?.mileage
+    val title: String = if (name != "") name.toString() else "$year $make $model"
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        "$title",
+                        title,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -118,7 +114,7 @@ fun SpecificCar(navController: NavHostController, carID: Int) {
                         .fillMaxSize()
                         .background(Color.LightGray)
                 ) {
-                    serviceRecords?.forEach { it ->
+                    serviceRecords?.forEach {
                         ServiceRecordRow(it, navController)
                     }
                 }

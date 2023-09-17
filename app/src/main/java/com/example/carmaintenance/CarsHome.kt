@@ -2,7 +2,6 @@ package com.example.carmaintenance
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,10 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -35,8 +31,6 @@ import kotlinx.coroutines.runBlocking
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CarsHome(navController: NavHostController) {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -63,7 +57,7 @@ fun CarsHome(navController: NavHostController) {
             contentPadding = innerPadding
         ) {
             item {
-                CarListDisplay(navController, innerPadding)
+                CarListDisplay(navController)
             }
 
             item {
@@ -87,7 +81,7 @@ fun CarsHome(navController: NavHostController) {
 }
 
 @Composable
-fun CarListDisplay(navController: NavHostController, innerPadding: PaddingValues) {
+fun CarListDisplay(navController: NavHostController) {
     val db = CarDatabase.getDatabase(LocalContext.current)
     val carDao = db.carsDao()
     var cars: List<Car>? = null
@@ -111,7 +105,7 @@ fun CarListDisplay(navController: NavHostController, innerPadding: PaddingValues
                 Text("No cars")
             }
         } else {
-            cars?.forEach { it ->
+            cars?.forEach {
                 CarRow(it, navController)
             }
         }
