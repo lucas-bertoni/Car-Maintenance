@@ -109,22 +109,7 @@ fun EditCar(navController: NavHostController, carID: Int) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var nameInput by remember { mutableStateOf(name) }
-                    val focusManager = LocalFocusManager.current
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = nameInput,
-                        onValueChange = {
-                            nameInput = it
-                            name = nameInput
-                        },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Name") },
-                        singleLine = true
-                    )
+                    CustomTextField(label = "Name", value = nameInput, onInputChange = { nameInput = it; name = nameInput }, type = "String", singleLine = true)
                 }
             }
 
@@ -135,25 +120,7 @@ fun EditCar(navController: NavHostController, carID: Int) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var yearInput by remember { mutableStateOf(year) }
-                    val focusManager = LocalFocusManager.current
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = yearInput,
-                        onValueChange = {
-                            if (it.length <= 4) {
-                                yearInput = it
-                                year = yearInput
-                            }
-                        },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Year") },
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                    )
+                    CustomTextField(label = "Year", value = yearInput, onInputChange = { yearInput = it; year = yearInput }, type = "Int", singleLine = true)
                 }
             }
 
@@ -164,22 +131,7 @@ fun EditCar(navController: NavHostController, carID: Int) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var makeInput by remember { mutableStateOf(make) }
-                    val focusManager = LocalFocusManager.current
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = makeInput,
-                        onValueChange = {
-                            makeInput = it
-                            make = makeInput
-                        },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Make") },
-                        singleLine = true
-                    )
+                    CustomTextField(label = "Make", value = makeInput, onInputChange = { makeInput = it; make = makeInput }, type = "String", singleLine = true)
                 }
             }
 
@@ -190,22 +142,7 @@ fun EditCar(navController: NavHostController, carID: Int) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var modelInput by remember { mutableStateOf(model) }
-                    val focusManager = LocalFocusManager.current
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = modelInput,
-                        onValueChange = {
-                            modelInput = it
-                            model = modelInput
-                        },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Model") },
-                        singleLine = true
-                    )
+                    CustomTextField(label = "Model", value = modelInput, onInputChange = { modelInput = it; make = modelInput }, type = "String", singleLine = true)
                 }
             }
 
@@ -216,23 +153,7 @@ fun EditCar(navController: NavHostController, carID: Int) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var mileageInput by remember { mutableStateOf(mileage) }
-                    val focusManager = LocalFocusManager.current
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = mileageInput,
-                        onValueChange = {
-                            mileageInput = it
-                            mileage = mileageInput
-                        },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Mileage") },
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                    )
+                    CustomTextField(label = "Mileage", value = mileageInput, onInputChange = { mileageInput = it; mileage = mileageInput }, type = "Int", singleLine = true)
                 }
             }
 

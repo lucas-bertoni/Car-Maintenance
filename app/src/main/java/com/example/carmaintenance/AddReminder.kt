@@ -93,10 +93,9 @@ fun AddReminder(navController: NavHostController) {
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp),
                 ) {
-                    var carIDInput by remember { mutableIntStateOf(cars!![0].carID) }
-                    var carName by remember { mutableStateOf(cars!![0].name.toString()) }
+                    var carIDInput by remember { mutableIntStateOf(carID) }
+                    var carName by remember { mutableStateOf("Select a car") }
                     var expanded by remember { mutableStateOf(false) }
-
 
                     Box(
                         modifier = Modifier
@@ -145,7 +144,7 @@ fun AddReminder(navController: NavHostController) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var nameInput by remember { mutableStateOf("") }
-                    CustomTextField(label = "Name", value = nameInput, onInputChange = { nameInput = it }, type = "String", singleLine = true)
+                    CustomTextField(label = "Name", value = nameInput, onInputChange = { nameInput = it; name = nameInput }, type = "String", singleLine = true)
                 }
             }
 
@@ -156,7 +155,7 @@ fun AddReminder(navController: NavHostController) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var notesInput by remember { mutableStateOf("") }
-                    CustomTextField(label = "Notes", value = notesInput, onInputChange = { notesInput = it }, type = "String", singleLine = false)
+                    CustomTextField(label = "Notes", value = notesInput, onInputChange = { notesInput = it; notes = notesInput }, type = "String", singleLine = false)
                 }
             }
 
@@ -167,7 +166,7 @@ fun AddReminder(navController: NavHostController) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var dateInput by remember { mutableStateOf("") }
-                    CustomTextField(label = "Date", value = dateInput, onInputChange = { dateInput = it }, type = "String", singleLine = true)
+                    CustomTextField(label = "Date", value = dateInput, onInputChange = { dateInput = it; date = dateInput }, type = "String", singleLine = true)
                 }
             }
 
@@ -178,7 +177,7 @@ fun AddReminder(navController: NavHostController) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var timeInput by remember { mutableStateOf("") }
-                    CustomTextField(label = "Time", value = timeInput, onInputChange = { timeInput = it }, type = "String", singleLine = true)
+                    CustomTextField(label = "Time", value = timeInput, onInputChange = { timeInput = it; time = timeInput }, type = "String", singleLine = true)
                 }
             }
 
@@ -189,7 +188,7 @@ fun AddReminder(navController: NavHostController) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var mileageInput by remember { mutableStateOf("") }
-                    CustomTextField(label = "Mileage", value = mileageInput, onInputChange = { mileageInput = it }, type = "Int", singleLine = true)
+                    CustomTextField(label = "Mileage", value = mileageInput, onInputChange = { mileageInput = it; mileage = mileageInput }, type = "Int", singleLine = true)
                 }
             }
 

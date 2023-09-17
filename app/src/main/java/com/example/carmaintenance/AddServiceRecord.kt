@@ -73,16 +73,8 @@ fun AddServiceRecord(navController: NavHostController, carID: Int) {
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp),
                 ) {
-                    var nameInput by remember { mutableStateOf(name) }
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = nameInput,
-                        onValueChange = {
-                            nameInput = it
-                            name = nameInput
-                        },
-                        label = { Text("Name") }
-                    )
+                    var nameInput by remember { mutableStateOf("") }
+                    CustomTextField(label = "Name", value = nameInput, onInputChange = { nameInput = it; name = nameInput }, type = "String", singleLine = true)
                 }
             }
 
@@ -93,15 +85,7 @@ fun AddServiceRecord(navController: NavHostController, carID: Int) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var notesInput by remember { mutableStateOf(notes) }
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = notesInput,
-                        onValueChange = {
-                            notesInput = it
-                            notes = notesInput
-                        },
-                        label = { Text("Notes") }
-                    )
+                    CustomTextField(label = "Notes", value = notesInput, onInputChange = { notesInput = it; notes = notesInput }, type = "String", singleLine = false)
                 }
             }
 
@@ -112,15 +96,7 @@ fun AddServiceRecord(navController: NavHostController, carID: Int) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var mileageInput by remember { mutableStateOf(mileage) }
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = mileageInput,
-                        onValueChange = {
-                            mileageInput = it
-                            mileage = mileageInput
-                        },
-                        label = { Text("Mileage") }
-                    )
+                    CustomTextField(label = "Mileage", value = mileageInput, onInputChange = { mileageInput = it; mileage = mileageInput }, type = "Int", singleLine = true)
                 }
             }
 
@@ -131,15 +107,7 @@ fun AddServiceRecord(navController: NavHostController, carID: Int) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var dateInput by remember { mutableStateOf(date) }
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = dateInput,
-                        onValueChange = {
-                            dateInput = it
-                            date = dateInput
-                        },
-                        label = { Text("Date") }
-                    )
+                    CustomTextField(label = "Date", value = dateInput, onInputChange = { dateInput = it; date = dateInput }, type = "String", singleLine = true)
                 }
             }
 

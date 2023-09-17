@@ -109,22 +109,7 @@ fun EditServiceRecord(navController: NavHostController, serviceRecordID: Int) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var nameInput by remember { mutableStateOf(name) }
-                    val focusManager = LocalFocusManager.current
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = nameInput,
-                        onValueChange = {
-                            nameInput = it
-                            name = nameInput
-                        },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Name") },
-                        singleLine = true
-                    )
+                    CustomTextField(label = "Name", value = nameInput, onInputChange = { nameInput = it; name = nameInput }, type = "String", singleLine = true)
                 }
             }
 
@@ -135,22 +120,7 @@ fun EditServiceRecord(navController: NavHostController, serviceRecordID: Int) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var notesInput by remember { mutableStateOf(notes) }
-                    val focusManager = LocalFocusManager.current
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = notesInput,
-                        onValueChange = {
-                            notesInput = it
-                            notes = notesInput
-                        },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Notes") },
-                        singleLine = true
-                    )
+                    CustomTextField(label = "Notes", value = notesInput, onInputChange = { notesInput = it; notes = notesInput }, type = "String", singleLine = false)
                 }
             }
 
@@ -161,23 +131,7 @@ fun EditServiceRecord(navController: NavHostController, serviceRecordID: Int) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var mileageInput by remember { mutableStateOf(mileage) }
-                    val focusManager = LocalFocusManager.current
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = mileageInput,
-                        onValueChange = {
-                            mileageInput = it
-                            mileage = mileageInput
-                        },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Mileage") },
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                    )
+                    CustomTextField(label = "Mileage", value = mileageInput, onInputChange = { mileageInput = it; mileage = mileageInput }, type = "Int", singleLine = true)
                 }
             }
 
@@ -188,22 +142,7 @@ fun EditServiceRecord(navController: NavHostController, serviceRecordID: Int) {
                         .padding(horizontal = 10.dp),
                 ) {
                     var dateInput by remember { mutableStateOf(date) }
-                    val focusManager = LocalFocusManager.current
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxSize(),
-                        value = dateInput,
-                        onValueChange = {
-                            dateInput = it
-                            date = dateInput
-                        },
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
-                        ),
-                        label = { Text("Date") },
-                        singleLine = true
-                    )
+                    CustomTextField(label = "Date", value = dateInput, onInputChange = { dateInput = it; date = dateInput }, type = "String", singleLine = true)
                 }
             }
 
