@@ -12,24 +12,24 @@ import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.RoomDatabase
 
-@Database(entities = [Car::class, ServiceRecord::class, Reminder::class], version = 6)
-abstract class CarDatabase : RoomDatabase() {
+@Database(entities = [Car::class, ServiceRecord::class, Reminder::class], version = 1)
+abstract class AppDatabase : RoomDatabase() {
     abstract fun carsDao(): CarsDao
     abstract fun serviceRecordsDao(): ServiceRecordsDao
     abstract fun remindersDao(): RemindersDao
 
     companion object {
         @Volatile
-        private var INSTANCE: CarDatabase? = null
+        private var INSTANCE: AppDatabase? = null
 
-        fun getDatabase(context: Context): CarDatabase {
+        fun getDatabase(context: Context): AppDatabase {
             // if the INSTANCE is not null, then return it,
             // if it is, then create the database
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    CarDatabase::class.java,
-                    "car_database"
+                    AppDatabase::class.java,
+                    "app_database"
                 ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 // return instance
@@ -91,53 +91,53 @@ data class Reminder(
 @Dao
 interface CarsDao {
     @Query("SELECT carID, name, year, make, model FROM cars")
-    suspend fun getAllCars(): List<Car>
+    fun allCars(): List<Car>
 
     @Query("SELECT * FROM cars WHERE carID = :carID")
-    suspend fun getCar(carID: Int): Car
+    fun getCar(carID: Int): Car
 
     @Insert
-    suspend fun insertCar(car: Car)
+    fun insertCar(car: Car)
 
     @Query("DELETE FROM cars WHERE carID = :carID")
-    suspend fun deleteCar(carID: Int)
+    fun deleteCar(carID: Int)
 
     @Query("UPDATE cars SET name = :name, year = :year, make = :make, model = :model, mileage = :mileage WHERE carID = :carID")
-    suspend fun updateCar(carID: Int, name: String, year: String, make: String, model: String, mileage: String)
+    fun updateCar(carID: Int, name: String, year: String, make: String, model: String, mileage: String)
 }
 
 @Dao
 interface ServiceRecordsDao {
     @Query("SELECT * FROM service_records WHERE carID = :carID")
-    suspend fun getServiceRecords(carID: Int): List<ServiceRecord>
+    fun allServiceRecords(carID: Int): List<ServiceRecord>
 
     @Query("SELECT * FROM service_records WHERE serviceRecordID = :serviceRecordID")
-    suspend fun getServiceRecord(serviceRecordID: Int): ServiceRecord
+    fun getServiceRecord(serviceRecordID: Int): ServiceRecord
 
     @Insert
-    suspend fun insertServiceRecord(serviceRecord: ServiceRecord)
+    fun insertServiceRecord(serviceRecord: ServiceRecord)
 
     @Query("DELETE FROM service_records WHERE serviceRecordID = :serviceRecordID")
-    suspend fun deleteServiceRecord(serviceRecordID: Int)
+    fun deleteServiceRecord(serviceRecordID: Int)
 
     @Query("UPDATE service_records SET name = :name, notes = :notes, mileage = :mileage, date = :date WHERE serviceRecordID = :serviceRecordID")
-    suspend fun updateServiceRecord(serviceRecordID: Int, name: String, notes: String, mileage: String, date: String)
+    fun updateServiceRecord(serviceRecordID: Int, name: String, notes: String, mileage: String, date: String)
 }
 
 @Dao
 interface RemindersDao {
     @Query("SELECT * FROM reminders")
-    suspend fun getReminders(): List<Reminder>
+    fun allReminders(): List<Reminder>
 
     @Query("SELECT * FROM reminders WHERE reminderID = :reminderID")
-    suspend fun getReminder(reminderID: Int): Reminder
+    fun getReminder(reminderID: Int): Reminder
 
     @Insert
-    suspend fun insertReminder(reminder: Reminder)
+    fun insertReminder(reminder: Reminder)
 
     @Query("DELETE FROM reminders WHERE reminderID = :reminderID")
-    suspend fun deleteReminder(reminderID: Int)
+    fun deleteReminder(reminderID: Int)
 
     @Query("UPDATE reminders SET name = :name, notes = :notes, date = :date, time = :time, mileage = :mileage WHERE reminderID = :reminderID")
-    suspend fun updateReminder(reminderID: Int, name: String, notes: String, date: String, time: String, mileage: String)
+    fun updateReminder(reminderID: Int, name: String, notes: String, date: String, time: String, mileage: String)
 }
